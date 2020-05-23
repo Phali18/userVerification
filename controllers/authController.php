@@ -75,23 +75,23 @@ try {
             $stmt->bindParam(':password', $password);
             $stmt->execute();
 
-            if ($stmt->execute()) {
-                //login user, grabbing the userid from the database
-                //$_SESSION["id"] = $user["id"];
-                $_SESSION["username"] = $username;
-                $_SESSION["email"] = $email;
-                $_SESSION["verified"] = $verified;
-
-                sendVerificationEmail($email, $token);
-                //flash message 
-                $_SESSION["message"] = "You are now logged in!";
-                $_SESSION["alert-class"] = "alert-success";
-                //redirect 
-                header("location:homepage.php");
-                exit();
-            } else {
-                $errors["db_error"] = "Database error: Failed to register";
-            }
+//            if ($stmt->execute()) {
+//                //login user, grabbing the userid from the database
+//                //$_SESSION["id"] = $user["id"];
+//                $_SESSION["username"] = $username;
+//                $_SESSION["email"] = $email;
+//                $_SESSION["verified"] = $verified;
+//
+//                sendVerificationEmail($email, $token);
+//                //flash message 
+//                $_SESSION["message"] = "You are now logged in!";
+//                $_SESSION["alert-class"] = "alert-success";
+//                //redirect 
+//                header("location:homepage.php");
+//                exit();
+//            } else {
+//                $errors["db_error"] = "Database error: Failed to register";
+//            }
         }
     }
 
