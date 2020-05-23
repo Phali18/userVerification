@@ -1,0 +1,23 @@
+/* Imported Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+
+.form-div {
+  margin: 50px auto 50px;
+padding: 25px 15px 10px 15px;
+border: 1px solid #80ced7;
+border-radius: 5px;
+font-size: 1.1em;
+font-family: "Lora", serif;
+}
+
+/* remove the shadow from input fields */
+.form-control:focus {
+    box-shadow: none;
+}
+/* font sizes for all the form element with a paragraph */
+form p {
+   font-size: .89em; 
+}
+.form-div.login {
+    margin-top: 100px;
+}
