@@ -3,16 +3,36 @@
 
 Class auth{
 
+  private $email ; 
+  private $hashpasword ; 
+  private $realpasword;
+ 
   
+  //should this be in the controller -- line 12!!
+
+//  
+  // assign the variables, 
+  // if statement in the controller - P - if statements validating and then calling the model
+  
+  // go through the queries and change them to the DB names
+    public function __construct($email, $hashpassword, $realpassword) {
+  
+  if (isset($_POST["signup-btn"])) {
+        $this->email = $_POST["email"];
+        $this->hashpassword = hash($_POST["realpassword"]) ;
+        $this->realpassword = $_POST["realpassword"];
+       }
+  }
+
 
 public function duplicate_check(){
     
       $db = Db::getInstance();
     
-  $emailQuery = "SELECT count(*) FROM users WHERE :username='$username' AND :email='$email' AND username<>'' AND email <> '' LIMIT 1";
+  $emailQuery = "SELECT count(*) FROM admin_login WHERE :email='$email' AND :haspassword='$hashpassword' AND email<>'' AND haspassword <> '' LIMIT 1";
         $stmt = $db->prepare($emailQuery);
-        $stmt->BindParam(':username', $username);
         $stmt->BindParam(':email', $email);
+        $stmt->BindParam(':hashpassword', $hashpassword);
         $stmt->execute();
         $row = $stmt->fetch();
 $count = $row[0];
@@ -29,16 +49,17 @@ public function insertuser(){
     
       $db = Db::getInstance();
     
-  $sql = ("INSERT INTO users (username, email, verified, token, password) VALUES (:username, :email, :verified, :token, :password)");
+  $sql = ("INSERT INTO admin_login (email, hashpassword, realpassword) VALUES (:email, :hashpassword, :realpassword)");
             $stmt = $db->prepare($sql);
-            $stmt->bindParam(':username', $username); 
             $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':password', $password);
+            $stmt->bindParam(':hashpassword', $hashpassword);
+            $stmt->bindParam(':realpassword', $realpassword);
           
 
-  $username = $_POST('username');
+
   $email = $_POST('email');
-  $password = $_POST('password');
+  $password = $_POST('realpassword');
+  
 
   $stmt->execute();
 }
@@ -46,17 +67,20 @@ public function checkuser(){
     
       $db = Db::getInstance();
       
-  $query = "SELECT * FROM users WHERE :username ='$username' AND :password ='$password'";
+  $query = "SELECT * FROM admin_login WHERE :email ='$email' AND :hashpassword ='$hashpassword'";
             $stmt = $db->prepare($query);
-             $stmt->bindParam(':username', $username); 
-            $stmt->bindParam(':password', $password);
+             $stmt->bindParam(':email', $email); 
+            $stmt->bindParam(':hashpassword', $hashpassword);
             $stmt->execute();
      
             $rows = $stmt->fetchall();
             
             foreach ($rows as $row){
-                if (password_verify($password, $row["password"])) {
+                if (password_verify($hashpassword, $row["hashpassword"])) {
                  //$_SESSION["username"] == $_POST["username"];
+                    
+                    
+                    $_Session['email'] = $this->email;
                       header('uploadblog.php');
                 }
                 else{
@@ -72,6 +96,7 @@ public function checkuser(){
 }
 
 }
+
 
 //click login it activates this sort of function with a try and catch block - could even have a controller and action
 // which calls the logmein function which automatically call the two methods of duplicate check and
